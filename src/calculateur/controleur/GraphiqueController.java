@@ -22,6 +22,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class GraphiqueController implements Initializable
 {
@@ -123,10 +126,12 @@ public class GraphiqueController implements Initializable
 						
 						while(!isCancelled())
 						{
-							Clock local = Clock.systemDefaultZone();
-							Clock.tick(local, Duration.ofHours(1));
+							ZoneId zone = ZoneId.of("UTC-5");
+							Clock seconde = Clock.tickSeconds(zone);
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss\nyyyy-MM-dd").withZone(zone);
+							retour = formatter.format(Instant.now(seconde));
 							
-							retour =
+							
 							
 							updateValue(retour);
 							
