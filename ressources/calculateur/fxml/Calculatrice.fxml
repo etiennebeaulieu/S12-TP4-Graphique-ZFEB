@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="fond" stylesheets="@../css/calculatriceSteamPunk.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calculateur.controleur.CalculatriceController">
    <children>
       <MenuBar>
@@ -32,6 +31,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#ouvrirFonction" text="Fonctions" />
                   <MenuItem mnemonicParsing="false" onAction="#ouvrirConversion" text="Conversions" />
+                  <MenuItem mnemonicParsing="false" onAction="#ouvrirGraphique" text="Graphique" />
                </items>
             </Menu>
          </menus>

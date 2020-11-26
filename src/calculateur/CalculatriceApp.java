@@ -12,11 +12,13 @@ import java.io.ObjectOutputStream;
 import calculateur.controleur.CalculatriceController;
 import calculateur.controleur.ConversionController;
 import calculateur.controleur.FonctionController;
+import calculateur.controleur.GraphiqueController;
 import calculateur.model.Enregistre;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -28,9 +30,11 @@ public class CalculatriceApp extends Application
 	private static Stage fenetreConversion;
 	private static Stage fenetreFonction;
 	private static Stage fenetreCalculatrice;
+	private static Stage fenetreGraphique;
 	private static CalculatriceController calculatriceController;
 	private static ConversionController conversionController;
 	private static FonctionController fonctionController;
+	private static GraphiqueController graphiqueController;
 	private static Enregistre memoire;
 
 	public static void main(String[] args)
@@ -92,6 +96,19 @@ public class CalculatriceApp extends Application
 				this.getClass().getResourceAsStream("/images/logoFonc.png")));
 		fenetreFonction.setResizable(false);
 		fenetreFonction.initOwner(fenetreCalculatrice);
+		
+		
+		FXMLLoader loader4 = new FXMLLoader(this.getClass().getResource("fxml/Graphique.fxml"));
+		BorderPane bP = loader4.load();
+		graphiqueController = loader4.getController();
+		
+		fenetreGraphique = new Stage();
+		fenetreGraphique.setScene(new Scene(bP));
+		fenetreGraphique.setTitle("Module du graphique Étienne et Zacharie");
+		fenetreGraphique.getIcons().add(new Image(this.getClass().getResourceAsStream("/images/logoGraph.png")));
+		fenetreGraphique.setResizable(false);
+		fenetreGraphique.initOwner(fenetreCalculatrice);
+		
 
 	}
 
@@ -103,6 +120,11 @@ public class CalculatriceApp extends Application
 	public static void showFonction()
 	{
 		fenetreFonction.show();
+	}
+	
+	public static void showGraphique()
+	{
+		fenetreGraphique.show();
 	}
 
 	// Sérialise l'objet de type Enregistre et l'écrit dans un fichier envoyé en
@@ -164,6 +186,7 @@ public class CalculatriceApp extends Application
 	{
 		calculatriceController.setMemoire();
 		fonctionController.setMemoire();
+		graphiqueController.setMemoire();
 
 	}
 

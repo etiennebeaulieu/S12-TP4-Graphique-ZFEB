@@ -146,6 +146,13 @@ public class CalculatriceController implements Initializable
 		// Ouvre la fenêtre du module de fonction
 		CalculatriceApp.showFonction();
 	}
+	
+	@FXML
+	void ouvrirGraphique(ActionEvent event)
+	{
+		//Ouvre la fenêtre du module du graphique
+		CalculatriceApp.showGraphique();
+	}
 
 	@FXML
 	void reset(ActionEvent event)

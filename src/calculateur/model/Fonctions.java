@@ -9,6 +9,12 @@ public class Fonctions implements Serializable
 	private static final long serialVersionUID = 1682111380115922536L;
 	private String fonction;
 	private String nom;
+	private double xMin;
+	private double xMax;
+	private double sampling;
+	private static final double X_MIN = 0;
+	private static final double X_MAX = 10;
+	private static final double SAMPLING = 50;
 
 	/**
 	 * Constructeur permettant d'instancier un objet Fonctions contenant sa
@@ -21,6 +27,24 @@ public class Fonctions implements Serializable
 	{
 		this.fonction = fonction;
 		nom = nomFonction;
+		xMin = X_MIN;
+		xMax = X_MAX;
+		sampling = SAMPLING;
+	}
+
+	public double getxMin()
+	{
+		return xMin;
+	}
+
+	public double getxMax()
+	{
+		return xMax;
+	}
+
+	public double getSampling()
+	{
+		return sampling;
 	}
 
 	/**
