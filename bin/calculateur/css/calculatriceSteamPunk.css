@@ -1,0 +1,38 @@
+/* Zacharie Forest et Étienne Beaulieu */
+
+.affichage {
+	-fx-background-color: rgba(186, 121, 64, 0.8);
+	-fx-background-radius: 5;
+}
+
+.button {
+	-fx-background-color: rgba(186, 121, 64, 0.8);
+	-fx-background-radius: 5;
+}
+
+.button:hover {
+	-fx-background-color: rgba(186, 121, 64, 0.9);
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-border-radius: 5;
+	-fx-scale-x: 1.1;
+	-fx-scale-y: 1.1;
+}
+
+.fond {
+	-fx-background-image: url("/images/background.jpg");
+}
+
+.list-view {
+	-fx-background-color: rgba(186, 121, 64, 0.8);
+}
+
+.list-view .list-cell:even {
+	-fx-background-color: rgba(186, 121, 64, 0.8);
+	-fx-font-weight: bold;
+}
+
+.list-view .list-cell:odd {
+	-fx-background-color: rgba(186, 128, 77, 0.8);
+	-fx-font-weight: bold;
+}
