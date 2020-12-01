@@ -165,7 +165,8 @@ public class GraphiqueController implements Initializable
 				throw new Exception("Remplir tous les champs");
 			if (Double.parseDouble(dureeText.getText()) <= 0)
 				throw new Exception("Durée invalide");
-			if (Double.parseDouble(aMaxText.getText()) <= Double.parseDouble(aMinText.getText()))
+			if (Double.parseDouble(aMaxText.getText()) <= Double
+					.parseDouble(aMinText.getText()))
 				throw new Exception("Bornes invalides");
 			seriesService.restart();
 		}
@@ -193,49 +194,60 @@ public class GraphiqueController implements Initializable
 	void tracer(ActionEvent event)
 	{
 		erreurLabel.setText("");
-		Series<Number, Number> series = tracerFonction(
-				Double.parseDouble(aMinText.getText()));
-		graphique.setCreateSymbols(false);
-		graphique.getData().add(series);
+		Fonctions select = fonctionsListe.getSelectionModel().getSelectedItem();
+
+		try
+		{
+			validerTracer(select);
+
+			Series<Number, Number> series = tracerFonction(
+					Double.parseDouble(aMinText.getText()));
+			graphique.setCreateSymbols(false);
+			graphique.getData().add(series);
+		}
+		catch (Exception e)
+		{
+			erreurLabel.setText(e.getMessage());
+		}
+
+	}
+
+	private void validerTracer(Fonctions select) throws Exception
+	{
+		double min = Double.parseDouble(xMinText.getText());
+		double max = Double.parseDouble(xMaxText.getText());
+		double sampling = Double.parseDouble(samplingText.getText());
+
+		if (select.equals(null))
+			throw new Exception("Aucune fonction sélectionnée");
+		if (max <= min)
+			throw new Exception("Bornes invalides");
+		if (!select.deuxVariable())
+			throw new Exception(
+					"Fonction invalide. Veuillez choisir une fonction à deux variables");
+		if (sampling <= 0)
+			throw new Exception("Résolution invalide");
+
 	}
 
 	private Series<Number, Number> tracerFonction(double a)
 	{
 		Series<Number, Number> series = new Series<>();
 
-		try
+		Fonctions select = fonctionsListe.getSelectionModel().getSelectedItem();
+		Function fonction = new Function(select.getFonction());
+		double min = Double.parseDouble(xMinText.getText());
+		double max = Double.parseDouble(xMaxText.getText());
+		double sampling = Double.parseDouble(samplingText.getText());
+		double incrementation = ((max - min) / sampling);
+
+		series.setName(select.getName());
+
+		for (double i = min; i <= max; i += incrementation)
 		{
-			Fonctions select = fonctionsListe.getSelectionModel()
-					.getSelectedItem();
-			Function fonction = new Function(select.getFonction());
-			double min = Double.parseDouble(xMinText.getText());
-			double max = Double.parseDouble(xMaxText.getText());
-			double sampling = Double.parseDouble(samplingText.getText());
-			double incrementation = ((max - min) / sampling);
 
-			if (max <= min)
-				throw new Exception("Bornes invalides");
-			if (!select.deuxVariable())
-				throw new Exception(
-						"Fonction invalide. Veuillez choisir une fonction à deux variables");
-
-			series.setName(select.getName());
-
-			for (double i = min; i <= max; i += incrementation)
-			{
-
-				series.getData().add(
-						new Data<Number, Number>(i, fonction.calculate(i, a)));
-			}
-
-		}
-		catch (NullPointerException e)
-		{
-			erreurLabel.setText("Aucune fonction n'est sélectionnée");
-		}
-		catch (Exception e)
-		{
-			erreurLabel.setText(e.getMessage());
+			series.getData()
+					.add(new Data<Number, Number>(i, fonction.calculate(i, a)));
 		}
 
 		return series;
