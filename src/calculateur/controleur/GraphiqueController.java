@@ -117,7 +117,7 @@ public class GraphiqueController implements Initializable
 						{
 							retour = tracerFonction(i);
 							updateValue(retour);
-							updateProgress(-1*min+i, max-min);
+							updateProgress(-1 * min + i, max - min);
 
 							try
 							{
@@ -155,11 +155,26 @@ public class GraphiqueController implements Initializable
 			progressAnimer.setProgress(0);
 			desactiverBouton(false);
 		});
-		seriesService.restart();
+
+		try
+		{
+			if (aMinText.getText().equals("") || aMaxText.getText().equals("")
+					|| xMinText.getText().equals("")
+					|| xMaxText.getText().equals("")
+					|| samplingText.getText().equals(""))
+				throw new Exception("Remplir tous les champs");
+			if (Double.parseDouble(dureeText.getText()) <= 0)
+				throw new Exception("Durée invalide");
+			if (Double.parseDouble(aMaxText.getText()) <= Double.parseDouble(aMinText.getText()))
+				throw new Exception("Bornes invalides");
+			seriesService.restart();
+		}
+		catch (Exception e)
+		{
+			erreurLabel.setText(e.getMessage());
+		}
 
 	}
-
-
 
 	@FXML
 	void annuler(ActionEvent event)
@@ -226,7 +241,7 @@ public class GraphiqueController implements Initializable
 		return series;
 
 	}
-	
+
 	private void desactiverBouton(boolean b)
 	{
 		tracerBtn.setDisable(b);
