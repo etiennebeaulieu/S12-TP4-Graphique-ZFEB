@@ -117,7 +117,7 @@ public class GraphiqueController implements Initializable
 						{
 							retour = tracerFonction(i);
 							updateValue(retour);
-							updateProgress(i, max);
+							updateProgress(-1*min+i, max-min);
 
 							try
 							{
