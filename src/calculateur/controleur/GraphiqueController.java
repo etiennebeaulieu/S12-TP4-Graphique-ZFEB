@@ -61,9 +61,9 @@ public class GraphiqueController implements Initializable
 
 	@FXML
 	private Label erreurLabel;
-	
-    @FXML
-    private ProgressBar progressAnimer;
+
+	@FXML
+	private ProgressBar progressAnimer;
 
 	@FXML
 	private Button tracerBtn;
@@ -84,37 +84,41 @@ public class GraphiqueController implements Initializable
 	private Label horlogeLabel;
 
 	private static Enregistre memoire;
-	
-	Service<Series<Number,Number>> seriesService;
+
+	Service<Series<Number, Number>> seriesService;
 
 	@FXML
 	void animer(ActionEvent event)
 	{
-		seriesService = new Service<Series<Number,Number>>(){
+		erreurLabel.setText("");
+		seriesService = new Service<Series<Number, Number>>()
+		{
 
 			@Override
 			protected Task<Series<Number, Number>> createTask()
 			{
-				return new Task<Series<Number,Number>>(){
+				return new Task<Series<Number, Number>>()
+				{
 
 					double min = Double.parseDouble(aMinText.getText());
 					double max = Double.parseDouble(aMaxText.getText());
 					double duree = Double.parseDouble(dureeText.getText());
-					double incrementation = (max-min)/(duree*30);
-					
+					double incrementation = (max - min) / (duree * 30);
+
 					@Override
 					protected Series<Number, Number> call() throws Exception
 					{
 						desactiverBouton(true);
-						Series<Number,Number> retour = new Series<Number,Number>();
+						Series<Number, Number> retour = new Series<Number, Number>();
 						graphique.setCreateSymbols(false);
-						
-						for(double i = min; i<=max && !isCancelled(); i+=incrementation)
+
+						for (double i = min; i <= max
+								&& !isCancelled(); i += incrementation)
 						{
 							retour = tracerFonction(i);
 							updateValue(retour);
 							updateProgress(i, max);
-							
+
 							try
 							{
 								Thread.sleep(33);
@@ -125,48 +129,37 @@ public class GraphiqueController implements Initializable
 						}
 						return retour;
 					}
-					
+
 				};
 			}
-			
+
 		};
-		
-		
-		
-		seriesService.valueProperty().addListener((a,o,n)->{
+
+		seriesService.valueProperty().addListener((a, o, n) -> {
 			graphique.getData().clear();
 			graphique.getData().add(n);
 		});
-		
-		progressAnimer.progressProperty().bind(seriesService.progressProperty());
-		
-		seriesService.setOnCancelled((e)->{
+
+		progressAnimer.progressProperty()
+				.bind(seriesService.progressProperty());
+
+		seriesService.setOnCancelled((e) -> {
 			graphique.getData().clear();
 			erreurLabel.setText("Animation annulée");
 			progressAnimer.progressProperty().unbind();
 			progressAnimer.setProgress(0);
 			desactiverBouton(false);
 		});
-		seriesService.setOnSucceeded((e)->{
+		seriesService.setOnSucceeded((e) -> {
 			progressAnimer.progressProperty().unbind();
 			progressAnimer.setProgress(0);
 			desactiverBouton(false);
 		});
 		seriesService.restart();
-		
-		
-		
-		
-		
+
 	}
 
-	private void desactiverBouton(boolean b)
-	{
-		tracerBtn.setDisable(b);
-		effacerBtn.setDisable(b);
-		animerBtn.setDisable(b);
-		
-	}
+
 
 	@FXML
 	void annuler(ActionEvent event)
@@ -177,20 +170,22 @@ public class GraphiqueController implements Initializable
 	@FXML
 	void effacer(ActionEvent event)
 	{
+		erreurLabel.setText("");
 		graphique.getData().clear();
 	}
 
 	@FXML
 	void tracer(ActionEvent event)
 	{
-		Series<Number,Number> series = tracerFonction(Double.parseDouble(aMinText.getText()));
+		erreurLabel.setText("");
+		Series<Number, Number> series = tracerFonction(
+				Double.parseDouble(aMinText.getText()));
 		graphique.setCreateSymbols(false);
 		graphique.getData().add(series);
 	}
 
-	private Series<Number,Number> tracerFonction(double a)
+	private Series<Number, Number> tracerFonction(double a)
 	{
-		erreurLabel.setText("");
 		Series<Number, Number> series = new Series<>();
 
 		try
@@ -209,7 +204,6 @@ public class GraphiqueController implements Initializable
 				throw new Exception(
 						"Fonction invalide. Veuillez choisir une fonction à deux variables");
 
-			
 			series.setName(select.getName());
 
 			for (double i = min; i <= max; i += incrementation)
@@ -218,7 +212,6 @@ public class GraphiqueController implements Initializable
 				series.getData().add(
 						new Data<Number, Number>(i, fonction.calculate(i, a)));
 			}
-
 
 		}
 		catch (NullPointerException e)
@@ -229,8 +222,16 @@ public class GraphiqueController implements Initializable
 		{
 			erreurLabel.setText(e.getMessage());
 		}
-		
+
 		return series;
+
+	}
+	
+	private void desactiverBouton(boolean b)
+	{
+		tracerBtn.setDisable(b);
+		effacerBtn.setDisable(b);
+		animerBtn.setDisable(b);
 
 	}
 
