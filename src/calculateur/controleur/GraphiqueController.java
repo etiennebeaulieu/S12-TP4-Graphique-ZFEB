@@ -100,6 +100,7 @@ public class GraphiqueController implements Initializable
 					protected Series<Number, Number> call() throws Exception
 					{
 						Series<Number,Number> retour = new Series<Number,Number>();
+						graphique.setCreateSymbols(false);
 						
 						for(double i = min; i<=max && !isCancelled(); i+=incrementation)
 						{
