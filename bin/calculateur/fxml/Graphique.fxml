@@ -15,42 +15,57 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calculateur.controleur.GraphiqueController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" styleClass="fond" stylesheets="@../css/calculatriceSteamPunk.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calculateur.controleur.GraphiqueController">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="610.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <LineChart fx:id="graphique" animated="false" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0">
+            <LineChart fx:id="graphique" animated="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" styleClass="line-chart" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
               <xAxis>
-                <NumberAxis label="x" side="BOTTOM" />
+                <NumberAxis label="x" minorTickVisible="false" side="BOTTOM" tickLabelFill="#bfbfbf" tickMarkVisible="false">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="12.0" />
+                     </tickLabelFont></NumberAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis label="y" side="LEFT" />
+                <NumberAxis label="y" minorTickVisible="false" side="LEFT" tickLabelFill="#bfbfbf" tickMarkVisible="false">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="12.0" />
+                     </tickLabelFont></NumberAxis>
               </yAxis>
             </LineChart>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="a minimum" />
-                        <TextField fx:id="aMinText" alignment="CENTER_RIGHT" text="1" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="176.0" styleClass="affichage" text="a minimum" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField fx:id="aMinText" alignment="CENTER_RIGHT" styleClass="affichage" text="1" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="a maximum" />
-                        <TextField fx:id="aMaxText" alignment="CENTER_RIGHT" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" styleClass="affichage" text="a maximum" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField fx:id="aMaxText" alignment="CENTER_RIGHT" styleClass="affichage" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="durée" />
-                        <TextField fx:id="dureeText" alignment="CENTER_RIGHT" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="230.0" styleClass="affichage" text="durée" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField fx:id="dureeText" alignment="CENTER_RIGHT" styleClass="affichage" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
@@ -63,28 +78,37 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="375.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="x minimum" />
-                        <TextField alignment="CENTER_RIGHT" text="0" fx:id="xMinText" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="205.0" styleClass="affichage" text="x minimum" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField alignment="CENTER_RIGHT" styleClass="affichage" text="0" fx:id="xMinText" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="x maximum" />
-                        <TextField alignment="CENTER_RIGHT" text="100" fx:id="xMaxText" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="185.0" styleClass="affichage" text="x maximum" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField alignment="CENTER_RIGHT" styleClass="affichage" text="100" fx:id="xMaxText" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label accessibleRoleDescription="nd" text="Résolution" />
-                        <TextField fx:id="samplingText" alignment="CENTER_RIGHT" promptText="10x la longueur" text="1000" />
+                        <Label accessibleRoleDescription="nd" alignment="CENTER" prefHeight="17.0" prefWidth="195.0" styleClass="affichage" text="Résolution" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <TextField fx:id="samplingText" alignment="CENTER_RIGHT" promptText="10x la longueur" styleClass="affichage" text="1000" />
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
@@ -101,11 +125,17 @@
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                   <Button fx:id="effacerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#effacer" prefWidth="70.0" text="Effacer" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="20.0" right="40.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                   <StackPane>
                      <HBox.margin>
@@ -113,13 +143,19 @@
                      </HBox.margin>
                      <children>
                         <ProgressBar fx:id="progressAnimer" minHeight="25.0" minWidth="90.0" prefHeight="25.0" prefWidth="90.0" progress="0.0" />
-                        <Button fx:id="animerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="90.0" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#animer" prefWidth="90.0" text="Animer" textAlignment="CENTER" />
+                        <Button fx:id="animerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="90.0" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#animer" prefWidth="90.0" text="Animer" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Button>
                      </children>
                   </StackPane>
                   <Button fx:id="annulerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#annuler" prefWidth="70.0" text="Annuler" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                </children>
                <VBox.margin>
@@ -141,12 +177,12 @@
    <bottom>
       <AnchorPane prefHeight="50.0" prefWidth="760.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="horlogeLabel" prefHeight="45.0" prefWidth="90.0" text="16:35:30 2020-11-26" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="669.7142857142857" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label fx:id="horlogeLabel" alignment="CENTER" layoutX="660.0" prefHeight="50.0" prefWidth="100.0" text="16:35:30 2020-11-26" textAlignment="CENTER" textFill="#bfbfbf" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="660.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="erreurLabel" alignment="CENTER" prefHeight="50.0" prefWidth="300.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="0.0">
+            <Label fx:id="erreurLabel" alignment="CENTER" prefHeight="50.0" prefWidth="300.0" textAlignment="CENTER" textFill="#bfbfbf" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="230.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
