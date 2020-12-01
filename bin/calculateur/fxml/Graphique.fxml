@@ -6,10 +6,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -105,11 +107,15 @@
                         <Insets left="20.0" right="40.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="animerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#animer" prefWidth="70.0" text="Animer" textAlignment="CENTER">
+                  <StackPane>
                      <HBox.margin>
                         <Insets left="40.0" right="20.0" />
                      </HBox.margin>
-                  </Button>
+                     <children>
+                        <ProgressBar fx:id="progressAnimer" minHeight="25.0" minWidth="90.0" prefHeight="25.0" prefWidth="90.0" progress="0.0" />
+                        <Button fx:id="animerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="90.0" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#animer" prefWidth="90.0" text="Animer" textAlignment="CENTER" />
+                     </children>
+                  </StackPane>
                   <Button fx:id="annulerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#annuler" prefWidth="70.0" text="Annuler" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />

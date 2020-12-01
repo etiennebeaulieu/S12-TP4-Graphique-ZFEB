@@ -26,6 +26,7 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.util.converter.NumberStringConverter;
 
@@ -60,6 +61,9 @@ public class GraphiqueController implements Initializable
 
 	@FXML
 	private Label erreurLabel;
+	
+    @FXML
+    private ProgressBar progressAnimer;
 
 	@FXML
 	private Button tracerBtn;
@@ -80,11 +84,13 @@ public class GraphiqueController implements Initializable
 	private Label horlogeLabel;
 
 	private static Enregistre memoire;
+	
+	Service<Series<Number,Number>> seriesService;
 
 	@FXML
 	void animer(ActionEvent event)
 	{
-		Service<Series<Number,Number>> seriesService = new Service<Series<Number,Number>>(){
+		seriesService = new Service<Series<Number,Number>>(){
 
 			@Override
 			protected Task<Series<Number, Number>> createTask()
@@ -99,6 +105,7 @@ public class GraphiqueController implements Initializable
 					@Override
 					protected Series<Number, Number> call() throws Exception
 					{
+						desactiverBouton(true);
 						Series<Number,Number> retour = new Series<Number,Number>();
 						graphique.setCreateSymbols(false);
 						
@@ -106,6 +113,7 @@ public class GraphiqueController implements Initializable
 						{
 							retour = tracerFonction(i);
 							updateValue(retour);
+							updateProgress(i, max);
 							
 							try
 							{
@@ -130,9 +138,19 @@ public class GraphiqueController implements Initializable
 			graphique.getData().add(n);
 		});
 		
+		progressAnimer.progressProperty().bind(seriesService.progressProperty());
+		
 		seriesService.setOnCancelled((e)->{
 			graphique.getData().clear();
 			erreurLabel.setText("Animation annulée");
+			progressAnimer.progressProperty().unbind();
+			progressAnimer.setProgress(0);
+			desactiverBouton(false);
+		});
+		seriesService.setOnSucceeded((e)->{
+			progressAnimer.progressProperty().unbind();
+			progressAnimer.setProgress(0);
+			desactiverBouton(false);
 		});
 		seriesService.restart();
 		
@@ -142,10 +160,18 @@ public class GraphiqueController implements Initializable
 		
 	}
 
+	private void desactiverBouton(boolean b)
+	{
+		tracerBtn.setDisable(b);
+		effacerBtn.setDisable(b);
+		animerBtn.setDisable(b);
+		
+	}
+
 	@FXML
 	void annuler(ActionEvent event)
 	{
-
+		seriesService.cancel();
 	}
 
 	@FXML
