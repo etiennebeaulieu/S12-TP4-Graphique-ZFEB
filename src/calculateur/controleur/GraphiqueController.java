@@ -218,7 +218,7 @@ public class GraphiqueController implements Initializable
 		double max = Double.parseDouble(xMaxText.getText());
 		double sampling = Double.parseDouble(samplingText.getText());
 
-		if (select.equals(null))
+		if (fonctionsListe.getSelectionModel().isEmpty())
 			throw new Exception("Aucune fonction sélectionnée");
 		if (max <= min)
 			throw new Exception("Bornes invalides");
