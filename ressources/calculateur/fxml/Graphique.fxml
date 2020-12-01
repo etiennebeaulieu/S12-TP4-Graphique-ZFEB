@@ -121,22 +121,32 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="tracerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#tracer" prefWidth="70.0" text="Tracer" textAlignment="CENTER">
+                  <StackPane>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="effacerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#effacer" prefWidth="70.0" text="Effacer" textAlignment="CENTER">
+                     <children>
+                        <ProgressBar fx:id="progressAnimer3" minHeight="25.0" minWidth="90.0" prefHeight="25.0" prefWidth="90.0" progress="0.0" />
+                        <Button fx:id="tracerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#tracer" prefWidth="70.0" text="Tracer" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <StackPane>
                      <HBox.margin>
                         <Insets left="20.0" right="40.0" />
                      </HBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
+                     <children>
+                        <ProgressBar fx:id="progressAnimer2" minHeight="25.0" minWidth="90.0" prefHeight="25.0" prefWidth="90.0" progress="0.0" />
+                        <Button fx:id="effacerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#effacer" prefWidth="70.0" text="Effacer" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
                   <StackPane>
                      <HBox.margin>
                         <Insets left="40.0" right="20.0" />
@@ -149,14 +159,19 @@
                            </font></Button>
                      </children>
                   </StackPane>
-                  <Button fx:id="annulerBtn" alignment="CENTER" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#annuler" prefWidth="70.0" text="Annuler" textAlignment="CENTER">
+                  <StackPane>
                      <HBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </HBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
+                     <children>
+                        <ProgressBar fx:id="progressAnimer1" minHeight="25.0" minWidth="90.0" prefHeight="25.0" prefWidth="90.0" progress="0.0" />
+                        <Button fx:id="annulerBtn" alignment="CENTER" blendMode="MULTIPLY" maxWidth="70.0" minWidth="90.0" mnemonicParsing="false" onAction="#annuler" prefWidth="70.0" text="Annuler" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
