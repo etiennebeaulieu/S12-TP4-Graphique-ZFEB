@@ -98,6 +98,7 @@ public class CalculatriceApp extends Application
 		fenetreFonction.initOwner(fenetreCalculatrice);
 		
 		
+		//Load et configure la fenêtre secondaire pour le module du graphique
 		FXMLLoader loader4 = new FXMLLoader(this.getClass().getResource("fxml/Graphique.fxml"));
 		BorderPane bP = loader4.load();
 		graphiqueController = loader4.getController();
