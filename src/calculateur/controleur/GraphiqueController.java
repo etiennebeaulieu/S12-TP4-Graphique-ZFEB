@@ -103,6 +103,13 @@ public class GraphiqueController implements Initializable
 			progressAnimer.progressProperty()
 					.bind(seriesService.progressProperty());
 
+			seriesService.setOnFailed((e)->{
+				graphique.getData().clear();
+				erreurLabel.setText("Erreur dans l'animation");
+				progressAnimer.progressProperty().unbind();
+				progressAnimer.setProgress(0);
+			});
+			
 			seriesService.setOnCancelled((e) -> {
 				graphique.getData().clear();
 				erreurLabel.setText("Animation annulée");
@@ -158,27 +165,24 @@ public class GraphiqueController implements Initializable
 
 	private String validerTracer()
 	{
-		double min = Double.parseDouble(xMinText.getText());
-		double max = Double.parseDouble(xMaxText.getText());
-		double sampling = Double.parseDouble(samplingText.getText());
 		String erreur = "";
 
 		if (fonctionsListe.getSelectionModel().isEmpty())
-			erreur += "Aucune fonction sélectionnée";
+			erreur += "Aucune fonction sélectionnée\n";
 		else
 			if (!fonctionsListe.getSelectionModel().getSelectedItem()
 					.deuxVariable())
-				erreur += "Fonction invalide. Veuillez choisir une fonction à deux variables";
-		if (xMinText.getText().equals("") || xMaxText.getText().equals(""))
-			erreur += "Bornes non spécifiées";
+				erreur += "Fonction invalide. Veuillez choisir une fonction à deux variables\n";
+		if (xMinText.getText().isEmpty() || xMaxText.getText().isEmpty())
+			erreur += "Bornes non spécifiées\n";
 		else
-			if (max <= min)
-				erreur += "Bornes invalides";
-		if (samplingText.getText().equals(""))
-			erreur += "Résolution non spécifiée";
+			if (Double.parseDouble(xMaxText.getText()) <= Double.parseDouble(xMinText.getText()))
+				erreur += "Bornes invalides\n";
+		if (samplingText.getText().isEmpty())
+			erreur += "Résolution non spécifiée\n";
 		else
-			if (sampling <= 0)
-				erreur += "Résolution invalide";
+			if (Double.parseDouble(samplingText.getText()) <= 0)
+				erreur += "Résolution invalide\n";
 
 		return erreur;
 
@@ -189,17 +193,17 @@ public class GraphiqueController implements Initializable
 		String erreur = "";
 		erreur += validerTracer();
 
-		if (aMinText.getText().equals("") || aMaxText.getText().equals(""))
-			erreur += "Bornes de a non spécifiées";
+		if (aMinText.getText().isEmpty() || aMaxText.getText().isEmpty())
+			erreur += "Bornes de a non spécifiées\n";
 		else
 			if (Double.parseDouble(aMaxText.getText()) <= Double
 					.parseDouble(aMinText.getText()))
-				erreur += "Bornes de a invalides";
-		if (dureeText.getText().equals(""))
-			erreur += "Durée non spécifiée";
+				erreur += "Bornes de a invalides\n";
+		if (dureeText.getText().isEmpty())
+			erreur += "Durée non spécifiée\n";
 		else
 			if (Double.parseDouble(dureeText.getText()) <= 0)
-				erreur += "Durée invalide";
+				erreur += "Durée invalide\n";
 
 		return erreur;
 	}
