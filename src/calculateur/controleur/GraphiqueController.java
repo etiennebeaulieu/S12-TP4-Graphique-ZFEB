@@ -156,7 +156,10 @@ public class GraphiqueController implements Initializable
 			Series<Number, Number> series = tracerFonction(
 					Double.parseDouble(aMinText.getText()));
 			graphique.setCreateSymbols(false);
-			graphique.getData().add(series);
+			if(!series.getData().isEmpty())
+				graphique.getData().add(series);
+			else
+				erreurLabel.setText("Fonction indéfinie");
 		}
 		else
 			erreurLabel.setText(validerTracer());
@@ -224,8 +227,9 @@ public class GraphiqueController implements Initializable
 		for (double i = min; i <= max; i += incrementation)
 		{
 
-			series.getData()
-					.add(new Data<Number, Number>(i, fonction.calculate(i, a)));
+			
+			if(!((Double)fonction.calculate(i,a)).equals(Double.NaN))
+				series.getData().add(new Data<Number, Number>(i, fonction.calculate(i, a)));
 		}
 
 		return series;
@@ -245,11 +249,11 @@ public class GraphiqueController implements Initializable
 	{
 		setMemoire();
 		horloge();
-		creerService();
+		creerServiceAnimation();
 
 	}
 
-	private void creerService()
+	private void creerServiceAnimation()
 	{
 		seriesService = new Service<Series<Number, Number>>()
 		{
@@ -278,7 +282,8 @@ public class GraphiqueController implements Initializable
 						for (double i = min; i <= max
 								&& !isCancelled(); i += incrementation)
 						{
-							retour = tracerFonction(i);
+							if(!tracerFonction(i).getData().isEmpty())
+								retour = tracerFonction(i);
 							updateValue(retour);
 							updateProgress(-1 * min + i, max - min);
 
