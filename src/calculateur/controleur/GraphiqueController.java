@@ -6,15 +6,9 @@ import java.util.ResourceBundle;
 
 import org.mariuszgromada.math.mxparser.Function;
 
-import com.sun.xml.internal.ws.api.model.ExceptionType;
-
 import calculateur.CalculatriceApp;
 import calculateur.model.Enregistre;
 import calculateur.model.Fonctions;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -28,13 +22,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.util.converter.NumberStringConverter;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+//Zacharie Forest et Étienne Beaulieu
 public class GraphiqueController implements Initializable
 {
 
@@ -87,12 +80,14 @@ public class GraphiqueController implements Initializable
 
 	Service<Series<Number, Number>> seriesService;
 
+	//Méthode se mettant en fonction lorsque le bouton animer est activé
 	@FXML
 	void animer(ActionEvent event)
 	{
 		erreurLabel.setText("");
 		if (!validerAnimer().equals(""))
 			erreurLabel.setText(validerAnimer());
+		//Entre dans le else si il n'y a aucun problème, complète le service et le lance
 		else
 		{
 			seriesService.valueProperty().addListener((a, o, n) -> {
@@ -108,6 +103,7 @@ public class GraphiqueController implements Initializable
 				erreurLabel.setText("Erreur dans l'animation");
 				progressAnimer.progressProperty().unbind();
 				progressAnimer.setProgress(0);
+				desactiverBouton(false);
 			});
 			
 			seriesService.setOnCancelled((e) -> {
@@ -129,6 +125,7 @@ public class GraphiqueController implements Initializable
 
 	}
 
+	//Annule l'animation s'il y en a une
 	@FXML
 	void annuler(ActionEvent event)
 	{
@@ -138,6 +135,7 @@ public class GraphiqueController implements Initializable
 			erreurLabel.setText("Aucune animation à annuler");
 	}
 
+	//Efface le graphique tracé
 	@FXML
 	void effacer(ActionEvent event)
 	{
@@ -145,6 +143,7 @@ public class GraphiqueController implements Initializable
 		graphique.getData().clear();
 	}
 
+	//Trace le graphique
 	@FXML
 	void tracer(ActionEvent event)
 	{
@@ -156,6 +155,8 @@ public class GraphiqueController implements Initializable
 			Series<Number, Number> series = tracerFonction(
 					Double.parseDouble(aMinText.getText()));
 			graphique.setCreateSymbols(false);
+			
+			//Vérifie si la fonction est définie
 			if(!series.getData().isEmpty())
 				graphique.getData().add(series);
 			else
@@ -166,6 +167,7 @@ public class GraphiqueController implements Initializable
 
 	}
 
+	//Vérifie les différentes possibilitées d'erreur
 	private String validerTracer()
 	{
 		String erreur = "";
@@ -191,6 +193,7 @@ public class GraphiqueController implements Initializable
 
 	}
 
+	//Vérifie les différentes possibilitées d'erreur
 	private String validerAnimer()
 	{
 		String erreur = "";
@@ -211,6 +214,7 @@ public class GraphiqueController implements Initializable
 		return erreur;
 	}
 
+	//Crée une série et la remplie
 	private Series<Number, Number> tracerFonction(double a)
 	{
 		Series<Number, Number> series = new Series<>();
@@ -227,7 +231,7 @@ public class GraphiqueController implements Initializable
 		for (double i = min; i <= max; i += incrementation)
 		{
 
-			
+			//S'assurer que le point est défini avant de l'ajouter
 			if(!((Double)fonction.calculate(i,a)).equals(Double.NaN))
 				series.getData().add(new Data<Number, Number>(i, fonction.calculate(i, a)));
 		}
@@ -236,6 +240,7 @@ public class GraphiqueController implements Initializable
 
 	}
 
+	//Désactive les boutons
 	private void desactiverBouton(boolean b)
 	{
 		tracerBtn.setDisable(b);
@@ -253,6 +258,7 @@ public class GraphiqueController implements Initializable
 
 	}
 
+	//Instancie le service qui s'occupe de l'animation
 	private void creerServiceAnimation()
 	{
 		seriesService = new Service<Series<Number, Number>>()
@@ -282,6 +288,7 @@ public class GraphiqueController implements Initializable
 						for (double i = min; i <= max
 								&& !isCancelled(); i += incrementation)
 						{
+							//S'assure que le graphique est défini 
 							if(!tracerFonction(i).getData().isEmpty())
 								retour = tracerFonction(i);
 							updateValue(retour);
@@ -289,6 +296,7 @@ public class GraphiqueController implements Initializable
 
 							try
 							{
+								//Générer trente graphiques par seconde
 								Thread.sleep(33);
 							}
 							catch (Exception e)
@@ -323,8 +331,11 @@ public class GraphiqueController implements Initializable
 
 						while (!isCancelled())
 						{
+							//Sélectionne le bon fuseau horaire
 							ZoneId zone = ZoneId.of("UTC-5");
+							//Génère une horloge précise aux secondes
 							Clock seconde = Clock.tickSeconds(zone);
+							//Transforme la date sous le bon format
 							DateTimeFormatter formatter = DateTimeFormatter
 									.ofPattern("HH:mm:ss\nyyyy-MM-dd")
 									.withZone(zone);
@@ -334,6 +345,7 @@ public class GraphiqueController implements Initializable
 
 							try
 							{
+								//Actualise à tous les secondes
 								Thread.sleep(1000);
 							}
 							catch (Exception e)
@@ -350,11 +362,13 @@ public class GraphiqueController implements Initializable
 
 		};
 
+		//Bind le service avec le label
 		horlogeLabel.textProperty().bind(horlogeService.valueProperty());
 		horlogeService.start();
 
 	}
 
+	//Acceder et lier la mémoire
 	public void setMemoire()
 	{
 		memoire = CalculatriceApp.getMemoire();
