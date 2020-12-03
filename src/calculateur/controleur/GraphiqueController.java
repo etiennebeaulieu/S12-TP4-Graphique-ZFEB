@@ -91,88 +91,33 @@ public class GraphiqueController implements Initializable
 	void animer(ActionEvent event)
 	{
 		erreurLabel.setText("");
-		seriesService = new Service<Series<Number, Number>>()
+		if (!validerAnimer().equals(""))
+			erreurLabel.setText(validerAnimer());
+		else
 		{
+			seriesService.valueProperty().addListener((a, o, n) -> {
+				graphique.getData().clear();
+				graphique.getData().add(n);
+			});
 
-			@Override
-			protected Task<Series<Number, Number>> createTask()
-			{
-				return new Task<Series<Number, Number>>()
-				{
+			progressAnimer.progressProperty()
+					.bind(seriesService.progressProperty());
 
-					double min = Double.parseDouble(aMinText.getText());
-					double max = Double.parseDouble(aMaxText.getText());
-					double duree = Double.parseDouble(dureeText.getText());
-					double incrementation = (max - min) / (duree * 30);
+			seriesService.setOnCancelled((e) -> {
+				graphique.getData().clear();
+				erreurLabel.setText("Animation annulée");
+				progressAnimer.progressProperty().unbind();
+				progressAnimer.setProgress(0);
+				desactiverBouton(false);
+			});
+			seriesService.setOnSucceeded((e) -> {
+				progressAnimer.progressProperty().unbind();
+				progressAnimer.setProgress(0);
+				desactiverBouton(false);
+			});
 
-					@Override
-					protected Series<Number, Number> call() throws Exception
-					{
-						desactiverBouton(true);
-						Series<Number, Number> retour = new Series<Number, Number>();
-						graphique.setCreateSymbols(false);
-
-						for (double i = min; i <= max
-								&& !isCancelled(); i += incrementation)
-						{
-							retour = tracerFonction(i);
-							updateValue(retour);
-							updateProgress(-1 * min + i, max - min);
-
-							try
-							{
-								Thread.sleep(33);
-							}
-							catch (Exception e)
-							{
-							}
-						}
-						return retour;
-					}
-
-				};
-			}
-
-		};
-
-		seriesService.valueProperty().addListener((a, o, n) -> {
-			graphique.getData().clear();
-			graphique.getData().add(n);
-		});
-
-		progressAnimer.progressProperty()
-				.bind(seriesService.progressProperty());
-
-		seriesService.setOnCancelled((e) -> {
-			graphique.getData().clear();
-			erreurLabel.setText("Animation annulée");
-			progressAnimer.progressProperty().unbind();
-			progressAnimer.setProgress(0);
-			desactiverBouton(false);
-		});
-		seriesService.setOnSucceeded((e) -> {
-			progressAnimer.progressProperty().unbind();
-			progressAnimer.setProgress(0);
-			desactiverBouton(false);
-		});
-
-		try
-		{
-			if (aMinText.getText().equals("") || aMaxText.getText().equals("")
-					|| xMinText.getText().equals("")
-					|| xMaxText.getText().equals("")
-					|| samplingText.getText().equals(""))
-				throw new Exception("Remplir tous les champs");
-			if (Double.parseDouble(dureeText.getText()) <= 0)
-				throw new Exception("Durée invalide");
-			if (Double.parseDouble(aMaxText.getText()) <= Double
-					.parseDouble(aMinText.getText()))
-				throw new Exception("Bornes invalides");
 			seriesService.restart();
-		}
-		catch (Exception e)
-		{
-			erreurLabel.setText(e.getMessage());
+
 		}
 
 	}
@@ -180,7 +125,10 @@ public class GraphiqueController implements Initializable
 	@FXML
 	void annuler(ActionEvent event)
 	{
-		seriesService.cancel();
+		if (seriesService.isRunning())
+			seriesService.cancel();
+		else
+			erreurLabel.setText("Aucune animation à annuler");
 	}
 
 	@FXML
@@ -194,40 +142,66 @@ public class GraphiqueController implements Initializable
 	void tracer(ActionEvent event)
 	{
 		erreurLabel.setText("");
-		Fonctions select = fonctionsListe.getSelectionModel().getSelectedItem();
 
-		try
+		if (validerTracer().equals(""))
 		{
-			validerTracer(select);
 
 			Series<Number, Number> series = tracerFonction(
 					Double.parseDouble(aMinText.getText()));
 			graphique.setCreateSymbols(false);
 			graphique.getData().add(series);
 		}
-		catch (Exception e)
-		{
-			erreurLabel.setText(e.getMessage());
-		}
+		else
+			erreurLabel.setText(validerTracer());
 
 	}
 
-	private void validerTracer(Fonctions select) throws Exception
+	private String validerTracer()
 	{
 		double min = Double.parseDouble(xMinText.getText());
 		double max = Double.parseDouble(xMaxText.getText());
 		double sampling = Double.parseDouble(samplingText.getText());
+		String erreur = "";
 
 		if (fonctionsListe.getSelectionModel().isEmpty())
-			throw new Exception("Aucune fonction sélectionnée");
-		if (max <= min)
-			throw new Exception("Bornes invalides");
-		if (!select.deuxVariable())
-			throw new Exception(
-					"Fonction invalide. Veuillez choisir une fonction à deux variables");
-		if (sampling <= 0)
-			throw new Exception("Résolution invalide");
+			erreur += "Aucune fonction sélectionnée";
+		else
+			if (!fonctionsListe.getSelectionModel().getSelectedItem()
+					.deuxVariable())
+				erreur += "Fonction invalide. Veuillez choisir une fonction à deux variables";
+		if (xMinText.getText().equals("") || xMaxText.getText().equals(""))
+			erreur += "Bornes non spécifiées";
+		else
+			if (max <= min)
+				erreur += "Bornes invalides";
+		if (samplingText.getText().equals(""))
+			erreur += "Résolution non spécifiée";
+		else
+			if (sampling <= 0)
+				erreur += "Résolution invalide";
 
+		return erreur;
+
+	}
+
+	private String validerAnimer()
+	{
+		String erreur = "";
+		erreur += validerTracer();
+
+		if (aMinText.getText().equals("") || aMaxText.getText().equals(""))
+			erreur += "Bornes de a non spécifiées";
+		else
+			if (Double.parseDouble(aMaxText.getText()) <= Double
+					.parseDouble(aMinText.getText()))
+				erreur += "Bornes de a invalides";
+		if (dureeText.getText().equals(""))
+			erreur += "Durée non spécifiée";
+		else
+			if (Double.parseDouble(dureeText.getText()) <= 0)
+				erreur += "Durée invalide";
+
+		return erreur;
 	}
 
 	private Series<Number, Number> tracerFonction(double a)
@@ -267,6 +241,58 @@ public class GraphiqueController implements Initializable
 	{
 		setMemoire();
 		horloge();
+		creerService();
+
+	}
+
+	private void creerService()
+	{
+		seriesService = new Service<Series<Number, Number>>()
+		{
+
+			@Override
+			protected Task<Series<Number, Number>> createTask()
+			{
+				return new Task<Series<Number, Number>>()
+				{
+
+					double min = Double.parseDouble(aMinText.getText());
+					double max = Double.parseDouble(aMaxText.getText());
+					double duree = Double.parseDouble(dureeText.getText());
+					double incrementation = (max - min) / (duree * 30);
+					{
+						desactiverBouton(true);
+						graphique.setCreateSymbols(false);
+					}
+
+					@Override
+					protected Series<Number, Number> call() throws Exception
+					{
+
+						Series<Number, Number> retour = new Series<Number, Number>();
+
+						for (double i = min; i <= max
+								&& !isCancelled(); i += incrementation)
+						{
+							retour = tracerFonction(i);
+							updateValue(retour);
+							updateProgress(-1 * min + i, max - min);
+
+							try
+							{
+								Thread.sleep(33);
+							}
+							catch (Exception e)
+							{
+							}
+						}
+						return retour;
+					}
+
+				};
+			}
+
+		};
 
 	}
 
